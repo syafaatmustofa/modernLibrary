@@ -21,9 +21,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+// kategori
 Route::resource('kategori', KategoriController::class);
+// buku
 Route::resource('dashboard', BukuController::class);
+Route::get('deletebuku/{id}',[BukuController::class, 'destroy'])->name('deletebuku'); 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Route::view('dashboard', 'page.dashboard');
