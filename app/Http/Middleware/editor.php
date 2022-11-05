@@ -17,10 +17,11 @@ class editor
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->role != 'editor'){
+        if (Auth::user()->role == 'editor' || Auth::user()->role == 'admin'){
+            return $next($request);
+        }else {
             return redirect('login');
         }
 
-        return $next($request);
     }
 }

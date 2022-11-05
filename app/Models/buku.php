@@ -15,4 +15,6 @@ class buku extends Model
     {
         return $this->belongsTo(kategori::class);
     }
+
+
 }

@@ -7,6 +7,7 @@ use App\Models\kategori;
 use App\Http\Requests\StorebukuRequest;
 use App\Http\Requests\UpdatebukuRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +24,7 @@ class BukuController extends Controller
     {
         $data = buku::all();
         // dd($data);
-        return view('page.dashboard', compact('data'));
+        return view('page.buku.buku', compact('data'));
     }
 
     /**
@@ -46,7 +47,7 @@ class BukuController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'isbn' => 'required|integer',
+            'isbn' => 'required|integer|unique:bukus,isbn',
             'judul' => 'required|string',
             'sinopsis' => 'required|string',
             'penerbit' => 'required|string',
@@ -67,7 +68,7 @@ class BukuController extends Controller
             'stok' => $request->stok
         ]);
         // dd($request);
-        return redirect('/dashboard');
+        return redirect('/buku');
     }
 
     /**
@@ -118,7 +119,7 @@ class BukuController extends Controller
         ]);
 
         if (!$validator) {
-            return redirect()->route('dashboard.update', $id)->withErrors($validator);
+            return redirect()->route('buku.update', $id)->withErrors($validator);
         }
 
         if ($request->file('cover') != null) {
@@ -131,7 +132,7 @@ class BukuController extends Controller
             }
         // dd($request);
         $data->update($validator);
-        return redirect('/dashboard');
+        return redirect('/buku');
     }
 
     /**
@@ -147,6 +148,15 @@ class BukuController extends Controller
         $data->delete();
         Storage::delete([$data->cover]);
 
-        return redirect('/dashboard');
+        return redirect('/buku');
+    }
+
+    public function dashboard()
+    {
+        $data = buku::all();
+        $kategori = kategori::all();
+
+        // dd($kategori);
+        return view('page.dashboard', compact('data', 'kategori'));
     }
 }

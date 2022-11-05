@@ -1,7 +1,7 @@
 @extends('page.tampilan')
 
 @section('main')
-    <form action="{{ route('dashboard.update', $data->id)}}" method="POST" enctype="multipart/form-data" id="formid" name="formname">
+    <form action="{{ route('buku.update', $data->id)}}" method="POST" enctype="multipart/form-data" id="formid" name="formname">
         @csrf
         @method('put')
         <div class="form-group p-3">
@@ -42,7 +42,7 @@
         </div>
         <div class="row justify-content-between">
             <button type="submit" class="btn btn-primary btn-sm mt-3">Submit</button>
-            <a href="/dashboard" class="btn btn-danger btn-sm mt-3">kembali</a>
+            <a href="/buku" class="btn btn-danger btn-sm mt-3">kembali</a>
         </div>
     </form>
 @endsection

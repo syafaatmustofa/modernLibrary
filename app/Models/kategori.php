@@ -15,4 +15,5 @@ class kategori extends Model
     {
         return $this->hasMany(buku::class);
     }
+
 }

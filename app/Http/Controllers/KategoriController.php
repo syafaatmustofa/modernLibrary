@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\kategori;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorekategoriRequest;
 use App\Http\Requests\UpdatekategoriRequest;
 
@@ -15,7 +16,8 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        $data = kategori::all();
+        return view('page.kategori.kategori', compact('data'));
     }
 
     /**
@@ -25,18 +27,28 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        // $data = kategori::all();
+        return view('page.kategori.tambahkategori', compact('data'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorekategoriRequest  $request
+     * @param  \App\Http\Requests\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorekategoriRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nama' => 'required|string|unique:kategoris,nama'
+        ]);
+
+        kategori::create([
+            'nama' => $request->nama
+        ]);
+
+        // dd($request);
+        return redirect('/kategori');
     }
 
     /**
@@ -54,33 +66,50 @@ class KategoriController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\kategori  $kategori
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(kategori $kategori)
+    public function edit($id)
     {
-        //
+        $data = kategori::find($id);
+        return view('page.kategori.editkategori',compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatekategoriRequest  $request
+     * @param  \App\Http\Requests\Request  $request
      * @param  \App\Models\kategori  $kategori
+     * * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatekategoriRequest $request, kategori $kategori)
+    public function update(Request $request, $id)
     {
-        //
+        $data = kategori::find($id);
+
+        $validator = $request->validate([
+            'nama' => 'required|string'
+        ]);
+
+        $data->update($validator);
+        // dd($data);
+        return redirect('/kategori');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\kategori  $kategori
+     * * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(kategori $kategori)
+    public function destroy($id)
     {
-        //
+        $data = kategori::findorFail($id);
+        $data->delete();
+        // dd($data);
+        return redirect('/kategori');
     }
+
+    
 }
